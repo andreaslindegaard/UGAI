@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SpørgsmålsPrompt Generator</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f0f8ff;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 90%;
+            max-width: 600px;
+        }
+
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin: 10px 0 5px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        input, select {
+            padding: 10px;
+            border: 1px solid #bdc3c7;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        select {
+            appearance: none;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="5"><path d="M0 0 L5 5 L10 0" fill="none" stroke="%2334495E"/></svg>') no-repeat right 10px center;
+            background-size: 10px 5px;
+        }
+
+        button {
+            background-color: #3498db;
+            border: none;
+            color: white;
+            padding: 10px;
+            margin-top: 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        #output {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #ecf0f1;
+            border-radius: 5px;
+            background: #ecf0f1;
+            overflow-y: auto;
+            max-height: 300px;
+        }
+
+        #output h2 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        #output p {
+            margin: 5px 0;
+            color: #333;
+        }
+
+        #copyButton, #openSkoleGPT {
+            background-color: #27ae60;
+            margin-top: 10px;
+            margin-right: 5px; /* Changed to right margin */
+        }
+
+        #copyButton:hover, #openSkoleGPT:hover {
+            background-color: #219a53;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: space-between; /* Spaces out the buttons */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>SpørgsmålsPrompt Generator</h1>
+        <form id="questionForm">
+            <label for="theme">Tema:</label>
+            <input type="text" id="theme" name="theme" placeholder="Indtast tema her" required>
+
+            <label for="subject">Fag:</label>
+            <select id="subject" name="subject">
+                <option value="dansk">Dansk</option>
+                <option value="engelsk">Engelsk</option>
+                <option value="matematik">Matematik</option>
+                <option value="naturfag">Naturfag</option>
+                <option value="historie">Historie</option>
+                <option value="samfundsfag">Samfundsfag</option>
+                <option value="geografi">Geografi</option>
+                <option value="biologi">Biologi</option>
+                <option value="kemi">Kemi</option>
+                <option value="fysik">Fysik</option>
+                <option value="idraet">Idræt</option>
+                <option value="musik">Musik</option>
+                <option value="billedkunst">Billedkunst</option>
+                <option value="sløjd">Sløjd</option>
+                <option value="tysk">Tysk</option>
+                <option value="fransk">Fransk</option>
+                <option value="spansk">Spansk</option>
+                <!-- Add other subjects as needed -->
+            </select>
+
+            <label for="grade">Klasse:</label>
+            <select id="grade" name="grade">
+                <option value="0">0. Klasse</option>
+                <option value="1">1. Klasse</option>
+                <option value="2">2. Klasse</option>
+                <option value="3">3. Klasse</option>
+                <option value="4">4. Klasse</option>
+                <option value="5">5. Klasse</option>
+                <option value="6">6. Klasse</option>
+                <option value="7">7. Klasse</option>
+                <option value="8">8. Klasse</option>
+                <option value="9">9. Klasse</option>
+                <option value="10">10. Klasse</option>
+            </select>
+
+            <label for="numberOfQuestions">Antal spørgsmål:</label>
+            <select id="numberOfQuestions" name="numberOfQuestions">
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="15">15</option>
+                <option value="20">20</option>
+                <option value="25">25</option>
+                <option value="30">30</option>
+            </select>
+
+            <label for="questionType">Spørgsmålstype:</label>
+            <select id="questionType" name="questionType">
+                <option value="open">Kun åbne spørgsmål</option>
+                <option value="trivia">Kun triviaspørgsmål</option>
+                <option value="mix">Blandet (åbne og triviaspørgsmål)</option>
+            </select>
+
+            <button type="button" onclick="generatePrompt()">Generer Prompt</button>
+        </form>
+        <div id="output"></div>
+        <div class="button-container" style="display: none;">
+            <button id="copyButton" onclick="copyToClipboard()">Kopier Prompt</button>
+            <button id="openSkoleGPT" onclick="openSkoleGPT()">Åbn SkoleGPT</button>
+        </div>
+    </div>
+
+    <script>
+        function generatePrompt() {
+            const theme = document.getElementById('theme').value;
+            const subject = document.getElementById('subject').value;
+            const grade = document.getElementById('grade').value;
+            const numberOfQuestions = parseInt(document.getElementById('numberOfQuestions').value);
+            const questionType = document.getElementById('questionType').value;
+
+            let languageSubjects = ['engelsk', 'tysk', 'fransk', 'spansk'];
+            let translationNote = languageSubjects.includes(subject) ? ` Oversæt spørgsmålene til ${subject === 'engelsk' ? 'engelsk' : subject === 'tysk' ? 'tysk' : subject === 'fransk' ? 'fransk' : 'spansk'}.` : '';
+
+            let prompt = `Generer ${numberOfQuestions} spørgsmål om temaet "${theme}" i faget ${subject} for ${grade}. klasse i den danske folkeskole. Spørgsmålene skal være ${questionType === 'open' ? 'åbne' : questionType === 'trivia' ? 'triviaspørgsmål' : 'en blanding af åbne og triviaspørgsmål'}. Sørg for, at spørgsmålene er:
+            - Tilpasset aldersgruppen og fagets niveau.
+            - Stimulerende for både kritisk tænkning og elevengagement.
+            - Fagligt relevante og relaterede til læreplanen for det pågældende fag.
+            - Formuleret klart og præcist${languageSubjects.includes(subject) ? ' på ' + subject : ' på dansk'}.
+            - Passende for brug i klasseværelset til diskussion eller som opgaver.${translationNote}`;
+
+            displayPrompt(prompt);
+        }
+
+        function displayPrompt(prompt) {
+            const outputDiv = document.getElementById('output');
+            outputDiv.innerHTML = '<h2>Genereret Prompt:</h2>' + `<p>${prompt}</p>`;
+            document.querySelector('.button-container').style.display = 'flex';
+        }
+
+        function copyToClipboard() {
+            const outputText = document.getElementById('output').innerText;
+            navigator.clipboard.writeText(outputText).then(() => {
+                alert('Prompt kopieret til udklipsholderen!');
+            }, () => {
+                alert('Kunne ikke kopiere til udklipsholderen. Prøv igen.');
+            });
+        }
+
+        function openSkoleGPT() {
+            window.open('https://chat.skolegpt.dk/en', '_blank');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8" />
+    <title>Tekst-prompt-generator</title>
+    <style>
+        /* Reset til at starte på en ensartet base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Cool-toned, retro farvevalg - statisk gradient. */
+        body {
+            background: linear-gradient(135deg, #556c8c, #93b7be);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: inline-block;
+            margin-bottom: 5px;
+            color: #fff;
+            font-weight: bold;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+        }
+
+        select, input, textarea {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            margin-bottom: 5px;
+            outline: none;
+            font-size: 1rem;
+        }
+
+        select:focus, input:focus, textarea:focus {
+            box-shadow: 0 0 5px rgba(255,255,255,0.5);
+        }
+
+        /* Adding a flex row for CEFR and LIX on the same line */
+        .flex-row {
+            display: flex;
+            gap: 20px;
+            justify-content: space-between;
+        }
+
+        button {
+            background-color: #ffffff;
+            color: #000;
+            font-weight: bold;
+            font-size: 1rem;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: inline-block;
+            margin-top: 10px;
+            margin-right: 10px;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        #promptOutput {
+            width: 100%;
+            min-height: 120px;
+            margin-top: 10px;
+            resize: vertical;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Tekst-prompt-generator</h1>
+
+    <div class="container">
+        <div class="form-group">
+            <label for="klassetrin">Klassetrin:</label>
+            <select id="klassetrin">
+                <option value="0. klasse">0. klasse</option>
+                <option value="1. klasse">1. klasse</option>
+                <option value="2. klasse">2. klasse</option>
+                <option value="3. klasse">3. klasse</option>
+                <option value="4. klasse">4. klasse</option>
+                <option value="5. klasse">5. klasse</option>
+                <option value="6. klasse">6. klasse</option>
+                <option value="7. klasse">7. klasse</option>
+                <option value="8. klasse">8. klasse</option>
+                <option value="9. klasse">9. klasse</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="genre">Genre:</label>
+            <input type="text" id="genre" placeholder="F.eks. novelle, artikel osv.">
+        </div>
+
+        <div class="form-group">
+            <label for="beskrivelse">Beskrivelse af teksten:</label>
+            <textarea id="beskrivelse" rows="4"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="sprog">Sprog:</label>
+            <select id="sprog">
+                <option value="Dansk">Dansk</option>
+                <option value="Engelsk">Engelsk</option>
+                <option value="Fransk">Fransk</option>
+                <option value="Tysk">Tysk</option>
+            </select>
+        </div>
+
+        <!-- Putting CEFR and LIX in one row -->
+        <div class="form-group flex-row">
+            <div>
+                <label for="cefr">CEFR-niveau:</label>
+                <select id="cefr">
+                    <option value="Ingen">Ingen</option>
+                    <option value="A1">A1</option>
+                    <option value="A2">A2</option>
+                    <option value="B1">B1</option>
+                    <option value="B2">B2</option>
+                    <option value="C1">C1</option>
+                    <option value="C2">C2</option>
+                </select>
+            </div>
+            <div>
+                <label for="lix">LIX-tal:</label>
+                <select id="lix">
+                    <option value="Ingen">Ingen</option>
+                    <option value="20 (Let)">20 (Let)</option>
+                    <option value="30 (Middel)">30 (Middel)</option>
+                    <option value="40 (Svær)">40 (Svær)</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="antalOrd">Antal ord:</label>
+            <input type="number" id="antalOrd" min="1" placeholder="F.eks. 200">
+        </div>
+
+        <button type="button" onclick="generatePrompt()">Generer prompt</button>
+        <button type="button" onclick="copyPrompt()">Kopier prompt</button>
+        <button type="button" onclick="openSkoleGPT()">Åbn SkoleGPT</button>
+        
+        <div class="form-group">
+            <label for="promptOutput">Genereret prompt:</label>
+            <textarea id="promptOutput" rows="6" readonly></textarea>
+        </div>
+    </div>
+
+    <script>
+        function generatePrompt() {
+            const klassetrin = document.getElementById('klassetrin').value;
+            const beskrivelse = document.getElementById('beskrivelse').value;
+            const sprog = document.getElementById('sprog').value;
+            const cefr = document.getElementById('cefr').value;
+            const antalOrd = document.getElementById('antalOrd').value;
+            const genre = document.getElementById('genre').value;
+            const lix = document.getElementById('lix').value;
+
+            let promptText = `Skriv en ${genre || ""} tekst på ${sprog}, målrettet ${klassetrin}.\n`;
+
+            // CEFR
+            if (cefr !== "Ingen") {
+                promptText += `CEFR-niveau: ${cefr}\n`;
+            }
+
+            // LIX
+            if (lix !== "Ingen") {
+                promptText += `LIX-niveau: ${lix}\n`;
+            }
+
+            if (antalOrd) {
+                promptText += `Forventet længde: ca. ${antalOrd} ord\n`;
+            }
+
+            // Emphasis on creating a good headline for the text
+            promptText += `\nTekstens overskrifter skal være på ${sprog}. Sørg for at inkludere en fængende og relevant hovedoverskrift, der passer til emnet.\n`;
+
+            if (beskrivelse) {
+                promptText += `\nBeskrivelse/Emne: ${beskrivelse}\n`;
+            }
+
+            promptText += `\nStrukturforslag:\n`;
+            promptText += `1. Introduktion – Præsentér emnet og væk elevens interesse\n`;
+            promptText += `2. Hoveddel – Uddyb emnet med argumenter, eksempler eller beskrivelser\n`;
+            promptText += `3. Konklusion – Afrund teksten og opsummer hovedpointen\n\n`;
+
+            promptText += `Retningslinjer:\n`;
+            promptText += `- Tilpas sværhedsgraden til ${klassetrin}.\n`;
+            promptText += `- Brug et sammenhængende sprog og varierende ordforråd.\n`;
+            promptText += `- Overvej at bruge konkrete eksempler eller fortællinger for at gøre teksten levende.\n`;
+            promptText += `- Hold dig til emnet, men vær kreativ.\n`;
+
+            document.getElementById('promptOutput').value = promptText;
+        }
+
+        function copyPrompt() {
+            const promptText = document.getElementById('promptOutput').value;
+            if (!promptText) {
+                alert("Der er ikke noget prompt at kopiere!");
+                return;
+            }
+            navigator.clipboard.writeText(promptText)
+                .then(() => {
+                    alert("Prompt kopieret!");
+                })
+                .catch(err => {
+                    console.error("Fejl ved kopiering", err);
+                });
+        }
+
+        function openSkoleGPT(){
+            window.open("https://skolegpt.dk/", "_blank");
+        }
+    </script>
+</body>
+</html>
