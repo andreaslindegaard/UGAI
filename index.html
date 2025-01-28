@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Landing Page</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column; 
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    h1 {
+      margin-bottom: 2rem;
+    }
+
+    .button-container {
+      display: flex;
+      gap: 2rem; /* plads mellem knapperne */
+    }
+
+    /* Styling til dine knapper */
+    .big-button {
+      text-decoration: none;
+      background-color: #1976D2;
+      color: #FFFFFF;
+      padding: 1rem 2rem;
+      font-size: 1.2rem;
+      border-radius: 5px;
+      transition: background-color 0.3s ease;
+      display: inline-flex;         /* gør det muligt at placere tekst og billede side om side */
+      align-items: center;          /* sørger for, at billedet og teksten er centreret lodret */
+    }
+
+    .big-button:hover {
+      background-color: #135C9B;
+    }
+
+    /* Stil selve billedet på knappen */
+    .button-icon {
+      width: 24px; 
+      height: 24px;
+      margin-right: 8px; /* plads mellem billedet og teksten */
+    }
+  </style>
+</head>
+<body>
+  <h1>Værktøjer til prompt</h1>
+  <div class="button-container">
+    <!-- Her indsætter du stien/URL'en til dine billeder -->
+    <a href="page1.html" class="big-button">
+      <img src="images/page1icon.png" alt="Ikon for side 1" class="button-icon" />
+      Tekstprompt
+    </a>
+    <a href="page2.html" class="big-button">
+      <img src="images/page2icon.png" alt="Ikon for side 2" class="button-icon" />
+      Spørgsmålsprompt
+    </a>
+  </div>
+</body>
+</html>
