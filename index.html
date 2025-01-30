@@ -6,46 +6,57 @@
   <title>UGAI</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
+      font-family: 'Arial', sans-serif;
       display: flex;
       flex-direction: column; 
       justify-content: center;
       align-items: center;
       height: 100vh;
       margin: 0;
+      background: linear-gradient(to right, #6a11cb, #2575fc);
+      color: #ffffff;
+      text-align: center;
     }
 
     h1 {
       margin-bottom: 2rem;
+      font-size: 2.5rem;
+      font-weight: bold;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
     }
 
     .button-container {
       display: flex;
-      gap: 2rem; /* plads mellem knapperne */
+      gap: 2rem;
+      flex-wrap: wrap;
     }
 
-    /* Styling til dine knapper */
     .big-button {
       text-decoration: none;
-      background-color: #1976D2;
-      color: #FFFFFF;
-      padding: 1rem 2rem;
-      font-size: 1.2rem;
-      border-radius: 5px;
-      transition: background-color 0.3s ease;
-      display: inline-flex;         /* gør det muligt at placere tekst og billede side om side */
-      align-items: center;          /* sørger for, at billedet og teksten er centreret lodret */
+      background: rgba(255, 255, 255, 0.2);
+      color: #ffffff;
+      padding: 1.2rem 2.5rem;
+      font-size: 1.4rem;
+      border-radius: 15px;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
+      font-weight: bold;
+      backdrop-filter: blur(10px);
     }
 
     .big-button:hover {
-      background-color: #135C9B;
+      background: rgba(255, 255, 255, 0.3);
+      transform: scale(1.05);
+      box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.3);
     }
 
-    /* Stil selve billedet på knappen */
     .button-icon {
-      width: 24px; 
-      height: 24px;
-      margin-right: 8px; /* plads mellem billedet og teksten */
+      width: 40px;
+      height: 40px;
+      margin-right: 12px;
+      filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.2));
     }
   </style>
   <link rel="icon" type="image/x-icon" href="images/favicon.ico">
@@ -53,7 +64,6 @@
 <body>
   <h1>Værktøjer til prompt</h1>
   <div class="button-container">
-    <!-- Her indsætter du stien/URL'en til dine billeder -->
     <a href="tekst-prompt-generator.html" class="big-button">
       <img src="images/text.png" alt="Ikon for side 1" class="button-icon" />
       Tekstprompt
