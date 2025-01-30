@@ -92,7 +92,7 @@
   <h1>Billedpromptgenerator</h1>
   <div class="image-placeholder">
     <img src="images/imagegenerator.webp" alt="imagegenerator" style="width:100%; height:100%; object-fit:cover; border-radius:8px;">
-</div>
+  </div>
   <div class="container">
     <!-- Motiv-beskrivelse -->
     <label for="motifInput">Beskriv motivet:</label>
@@ -133,8 +133,37 @@
       <label><input type="checkbox" value="Høj kontrast">Høj kontrast</label>
     </div>
     <input type="text" id="visualCustom" placeholder="Tilføj dine egne visuelle karakteristika..." />
-    
-    <!-- Resten af formularen forbliver uændret -->
+
+    <!-- Generer prompt-knap -->
+    <div class="button-row">
+      <button onclick="generatePrompt()">Generér prompt</button>
+      <button onclick="copyPrompt()">Kopier prompt</button>
+      <button onclick="openSkoleGPT()">Åbn SkoleGPT</button>
+    </div>
+
+    <label for="promptOutput">Genereret prompt:</label>
+    <textarea id="promptOutput" rows="4" readonly></textarea>
   </div>
+
+  <script>
+    function generatePrompt() {
+      const motif = document.getElementById('motifInput').value.trim();
+      const style = document.getElementById('styleSelect').value;
+      const styleCustom = document.getElementById('styleCustom').value.trim();
+      const finalStyle = style === 'Custom' && styleCustom ? styleCustom : style;
+      
+      let finalPrompt = `Generér et billede: detaljeret illustration af ${motif}, i ${finalStyle} stil.`;
+      document.getElementById('promptOutput').value = finalPrompt;
+    }
+
+    function copyPrompt() {
+      const promptText = document.getElementById('promptOutput').value;
+      navigator.clipboard.writeText(promptText).then(() => alert('Prompt kopieret!'));
+    }
+
+    function openSkoleGPT() {
+      window.open('https://skolegpt.dk', '_blank');
+    }
+  </script>
 </body>
 </html>
