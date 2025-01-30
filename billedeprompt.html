@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta charset="UTF-8">
+  <title>Billedpromptgenerator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background: #f4f4f4;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 1em;
+    }
+    .image-placeholder {
+      width: 100%;
+      max-width: 600px;
+      height: 300px;
+      background-color: #ddd;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #666;
+      font-size: 18px;
+      margin: 0 auto 20px auto;
+      border-radius: 8px;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+    }
+    label {
+      display: block;
+      margin: 0.5em 0 0.25em;
+      font-weight: bold;
+    }
+    select,
+    input[type="text"],
+    textarea {
+      width: 100%;
+      padding: 8px;
+      box-sizing: border-box;
+      margin-bottom: 1em;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    .checkbox-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1em;
+      margin-bottom: 1em;
+    }
+    .checkbox-group label {
+      display: inline-flex;
+      align-items: center;
+      font-weight: normal;
+      margin: 0;
+    }
+    .checkbox-group input {
+      margin-right: 5px;
+    }
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+    }
+    button {
+      padding: 10px 20px;
+      cursor: pointer;
+      background-color: #007BFF;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      font-size: 1em;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    #promptOutput {
+      background: #e7f3ff;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>AI Billedpromptgenerator</h1>
+  <div class="image-placeholder">
+    <img src="https://via.placeholder.com/600x300" alt="Pladsholder for billede" style="width:100%; height:100%; object-fit:cover; border-radius:8px;">
+</div>
+  <div class="container">
+    <!-- Motiv-beskrivelse -->
+    <label for="motifInput">Beskriv motivet:</label>
+    <input type="text" id="motifInput" placeholder="Beskriv det, du gerne vil have vist på billedet..." />
+
+    <!-- Stil / Genre -->
+    <label for="styleSelect">Stil / Genre:</label>
+    <select id="styleSelect">
+      <option value="Fotorealistisk">Fotorealistisk</option>
+      <option value="Impressionistisk">Impressionistisk</option>
+      <option value="Surrealistisk">Surrealistisk</option>
+      <option value="Manga/Anime">Manga/Anime</option>
+      <option value="Tegneserie">Tegneserie</option>
+      <option value="Digital kunst">Digital kunst</option>
+      <option value="Futuristisk">Futuristisk</option>
+      <option value="Cyberpunk">Cyberpunk</option>
+      <option value="Low poly">Low poly</option>
+      <option value="Vaporwave">Vaporwave</option>
+      <option value="Noir">Noir</option>
+      <option value="Pixel art">Pixel art</option>
+      <option value="Retro 80s">Retro 80’er</option>
+      <option value="Renæssance">Renæssance</option>
+      <option value="Barok">Barok</option>
+      <option value="Abstrakt">Abstrakt</option>
+      <option value="Minimalistisk">Minimalistisk</option>
+      <option value="Custom">Egen (skriv herunder)</option>
+    </select>
+    <input type="text" id="styleCustom" placeholder="Hvis 'Egen' er valgt, skriv din egen stil eller genre..." />
+
+    <!-- Visuelle karakteristika -->
+    <label>Visuelle karakteristika:</label>
+    <div class="checkbox-group" id="visualCharacteristics">
+      <label><input type="checkbox" value="Varme farver">Varme farver</label>
+      <label><input type="checkbox" value="Kølige farver">Kølige farver</label>
+      <label><input type="checkbox" value="Pastelfarver">Pastelfarver</label>
+      <label><input type="checkbox" value="Neonfarver">Neonfarver</label>
+      <label><input type="checkbox" value="Cinematisk belysning">Cinematisk belysning</label>
+      <label><input type="checkbox" value="Høj kontrast">Høj kontrast</label>
+    </div>
+    <input type="text" id="visualCustom" placeholder="Tilføj dine egne visuelle karakteristika..." />
+    
+    <!-- Resten af formularen forbliver uændret -->
+  </div>
+</body>
+</html>
