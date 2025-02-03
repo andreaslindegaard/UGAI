@@ -134,6 +134,33 @@
     </div>
     <input type="text" id="visualCustom" placeholder="Tilføj dine egne visuelle karakteristika..." />
 
+    <!-- Beskæring -->
+    <label for="croppingSelect">Beskæring:</label>
+    <select id="croppingSelect">
+      <option value="ultra nær">Ultra nær</option>
+      <option value="nær">Nær</option>
+      <option value="halv total">Halv total</option>
+      <option value="total">Total</option>
+      <option value="super total">Super total</option>
+    </select>
+
+    <!-- Perspektiv -->
+    <label for="perspectiveSelect">Perspektiv:</label>
+    <select id="perspectiveSelect">
+      <option value="normal">Normal</option>
+      <option value="fugleperspektiv">Fugleperspektiv</option>
+      <option value="frøperspektiv">Frøperspektiv</option>
+    </select>
+
+    <!-- Aspect Ratio -->
+    <label for="aspectRatioSelect">Aspect Ratio:</label>
+    <select id="aspectRatioSelect">
+      <option value="1:1">1:1</option>
+      <option value="16:9">16:9</option>
+      <option value="4:3">4:3</option>
+      <option value="3:2">3:2</option>
+    </select>
+
     <!-- Generer prompt-knap -->
     <div class="button-row">
       <button onclick="generatePrompt()">Generér prompt</button>
@@ -152,7 +179,11 @@
       const styleCustom = document.getElementById('styleCustom').value.trim();
       const finalStyle = style === 'Custom' && styleCustom ? styleCustom : style;
       
-      let finalPrompt = `Generér et billede: detaljeret illustration af ${motif}, i ${finalStyle} stil.`;
+      const cropping = document.getElementById('croppingSelect').value;
+      const perspective = document.getElementById('perspectiveSelect').value;
+      const aspectRatio = document.getElementById('aspectRatioSelect').value;
+      
+      let finalPrompt = `Generér et billede: detaljeret illustration af ${motif}, i ${finalStyle} stil, med beskæring ${cropping}, perspektiv ${perspective} og aspect ratio ${aspectRatio}.`;
       document.getElementById('promptOutput').value = finalPrompt;
     }
 
