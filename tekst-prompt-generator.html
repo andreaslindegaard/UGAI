@@ -104,6 +104,7 @@
         <div class="form-group">
             <label for="klassetrin">Klassetrin:</label>
             <select id="klassetrin">
+                <option value="" selected>Vælg klassetrin</option>
                 <option value="0. klasse">0. klasse</option>
                 <option value="1. klasse">1. klasse</option>
                 <option value="2. klasse">2. klasse</option>
@@ -119,7 +120,20 @@
 
         <div class="form-group">
             <label for="genre">Genre:</label>
-            <input type="text" id="genre" placeholder="F.eks. novelle, artikel osv.">
+            <select id="genre">
+                <option value="">Vælg genre</option>
+                <option value="novelle">Novelle</option>
+                <option value="artikel">Artikel</option>
+                <option value="essay">Essay</option>
+                <option value="reportage">Reportage</option>
+                <option value="eventyr">Eventyr</option>
+                <option value="drama">Drama</option>
+                <option value="digt">Digt</option>
+                <option value="komedie">Komedie</option>
+                <option value="tragedie">Tragedie</option>
+                <option value="saga">Saga</option>
+            </select>
+            <input type="text" id="egenGenre" placeholder="Skriv selv genre, hvis ikke der er den rigtige">
         </div>
 
         <div class="form-group">
@@ -184,10 +198,18 @@
             const sprog = document.getElementById('sprog').value;
             const cefr = document.getElementById('cefr').value;
             const antalOrd = document.getElementById('antalOrd').value;
-            const genre = document.getElementById('genre').value;
-            const lix = document.getElementById('lix').value;
+            const dropdownGenre = document.getElementById('genre').value;
+            const customGenre = document.getElementById('egenGenre').value;
+            
+            // Hvis der er skrevet en egen genre, bruges denne, ellers dropdown-værdien.
+            const genre = customGenre.trim() !== "" ? customGenre : dropdownGenre;
 
-            let promptText = `Skriv en ${genre || ""} tekst på ${sprog}, målrettet ${klassetrin}.\n`;
+            let promptText = `Skriv en ${genre || "[genre ikke valgt]"} tekst på ${sprog}`;
+            if (klassetrin) {
+                promptText += `, målrettet ${klassetrin}.\n`;
+            } else {
+                promptText += `.\n`;
+            }
 
             // CEFR
             if (cefr !== "Ingen") {
@@ -195,6 +217,7 @@
             }
 
             // LIX
+            const lix = document.getElementById('lix').value;
             if (lix !== "Ingen") {
                 promptText += `LIX-niveau: ${lix}\n`;
             }
@@ -203,7 +226,6 @@
                 promptText += `Forventet længde: ca. ${antalOrd} ord\n`;
             }
 
-            // Emphasis on creating a good headline for the text
             promptText += `\nTekstens overskrifter skal være på ${sprog}. Sørg for at inkludere en fængende og relevant hovedoverskrift, der passer til emnet.\n`;
 
             if (beskrivelse) {
@@ -216,7 +238,7 @@
             promptText += `3. Konklusion – Afrund teksten og opsummer hovedpointen\n\n`;
 
             promptText += `Retningslinjer:\n`;
-            promptText += `- Tilpas sværhedsgraden til ${klassetrin}.\n`;
+            promptText += `- Tilpas sværhedsgraden til ${klassetrin || "det valgte klassetrin"}.\n`;
             promptText += `- Brug et sammenhængende sprog og varierende ordforråd.\n`;
             promptText += `- Overvej at bruge konkrete eksempler eller fortællinger for at gøre teksten levende.\n`;
             promptText += `- Hold dig til emnet, men vær kreativ.\n`;
