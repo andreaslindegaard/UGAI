@@ -118,10 +118,12 @@
             </select>
         </div>
 
+        <!-- Genre sektion -->
         <div class="form-group">
             <label for="genre">Genre:</label>
             <select id="genre">
                 <option value="">Vælg genre</option>
+                <option value="ingen genre">Ingen genre</option>
                 <option value="novelle">Novelle</option>
                 <option value="artikel">Artikel</option>
                 <option value="essay">Essay</option>
@@ -133,12 +135,36 @@
                 <option value="tragedie">Tragedie</option>
                 <option value="saga">Saga</option>
             </select>
+        </div>
+        <div class="form-group">
+            <label for="genre2">Vil du mixe genrerne? Vælg genre nr 2:</label>
+            <select id="genre2">
+                <option value="">Vælg genre</option>
+                <option value="ingen genre">Ingen genre</option>
+                <option value="novelle">Novelle</option>
+                <option value="artikel">Artikel</option>
+                <option value="essay">Essay</option>
+                <option value="reportage">Reportage</option>
+                <option value="eventyr">Eventyr</option>
+                <option value="drama">Drama</option>
+                <option value="digt">Digt</option>
+                <option value="komedie">Komedie</option>
+                <option value="tragedie">Tragedie</option>
+                <option value="saga">Saga</option>
+            </select>
+        </div>
+        <div class="form-group">
             <input type="text" id="egenGenre" placeholder="Skriv selv genre, hvis ikke der er den rigtige">
         </div>
 
         <div class="form-group">
             <label for="beskrivelse">Beskrivelse af teksten:</label>
             <textarea id="beskrivelse" rows="4"></textarea>
+        </div>
+        <!-- Nyt felt til didaktiske overvejelser -->
+        <div class="form-group">
+            <label for="didaktik">Didaktiske overvejelser:</label>
+            <textarea id="didaktik" rows="3" placeholder="Evt. didaktiske overvejelser"></textarea>
         </div>
 
         <div class="form-group">
@@ -151,7 +177,7 @@
             </select>
         </div>
 
-        <!-- Putting CEFR and LIX in one row -->
+        <!-- CEFR og LIX på samme række -->
         <div class="form-group flex-row">
             <div>
                 <label for="cefr">CEFR-niveau:</label>
@@ -195,16 +221,24 @@
         function generatePrompt() {
             const klassetrin = document.getElementById('klassetrin').value;
             const beskrivelse = document.getElementById('beskrivelse').value;
+            const didaktik = document.getElementById('didaktik').value;
             const sprog = document.getElementById('sprog').value;
             const cefr = document.getElementById('cefr').value;
             const antalOrd = document.getElementById('antalOrd').value;
             const dropdownGenre = document.getElementById('genre').value;
             const customGenre = document.getElementById('egenGenre').value;
+            const dropdownGenre2 = document.getElementById('genre2').value;
             
             // Hvis der er skrevet en egen genre, bruges denne, ellers dropdown-værdien.
             const genre = customGenre.trim() !== "" ? customGenre : dropdownGenre;
+            
+            // Hvis der vælges en ekstra genre, kombineres de.
+            let genreText = genre;
+            if (dropdownGenre2.trim() !== "") {
+                genreText += " og " + dropdownGenre2;
+            }
 
-            let promptText = `Skriv en ${genre || "[genre ikke valgt]"} tekst på ${sprog}`;
+            let promptText = `Skriv en ${genreText || "[genre ikke valgt]"} tekst på ${sprog}`;
             if (klassetrin) {
                 promptText += `, målrettet ${klassetrin}.\n`;
             } else {
@@ -230,6 +264,10 @@
 
             if (beskrivelse) {
                 promptText += `\nBeskrivelse/Emne: ${beskrivelse}\n`;
+            }
+            
+            if (didaktik) {
+                promptText += `\nDidaktiske overvejelser: ${didaktik}\n`;
             }
 
             promptText += `\nStrukturforslag:\n`;
